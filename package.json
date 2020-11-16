@@ -1,0 +1,15 @@
+{
+  "name": "Web-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:TeamArray/Web-backend.git",
+  "author": "Array [ ] <wnskwjs123@naver.com>",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "knex": "^0.21.12",
+    "mysql": "^2.18.1",
+    "sha256": "^0.2.0"
+  }
+}
