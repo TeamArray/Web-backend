@@ -1,8 +1,9 @@
 const sha256 = require('sha256')
+const { sign } = require('jsonwebtoken')
 
 /**
  * @param {import('express').Request} req
- * @param {import('express').Response & { db: import('knex') }} res
+ * @param {import('express').Response & { db: import('knex'), token: string }} res
  */
 async function fn (req, res) {
   const { userid, passwd: pwraw } = req.body
@@ -13,9 +14,7 @@ async function fn (req, res) {
 
   const { passwd, pwsalt } = user
   if (sha256(pwsalt + pwraw) !== passwd) return res.send({ success: false, message: 'password invalid' })
-  res.send({ success: true, message: 'login success' })
-
-  // TODO: 세션 토큰 발급기 제작
+  res.send({ success: true, message: 'login success', token: sign({ userid }, res.token) })
 }
 
 module.exports = fn
