@@ -1,0 +1,29 @@
+const SECOND = 1000
+const cooldown = []
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response & { db: import('knex'), token: string }} res
+ */
+async function fn (req, res) {
+  const { user } = req
+  const { boardid } = req.params
+  const { title, content, isnotify = 0 } = req.body
+
+  if (cooldown.includes(user.userid)) return res.send({ success: false, message: 'cooldown enabled, please retry' })
+
+  const coolindex = cooldown.push(user.userid)
+  setTimeout(() => cooldown.splice(coolindex), 60 * SECOND)
+  
+  if (!title || !content) return res.send({ success: false, message: 'title or content is empty' })
+  if (title.length > 50) return res.send({ success: false, message: 'title is too long' })
+  if (content.length > 2000) return res.send({ success: false, message: 'content is too long' })
+  if (isnotify && !user.ismebr) return res.send({ success: false, message: 'cannot create notify post, you\'re not a team member' })
+
+  const [{ postid: latest }] = await res.db.select('postid').where('boardid', boardid).orderBy('postid').limit(1)
+
+  await res.db.insert({ postid: latest + 1, title, author: user.userid, content, boardid, isnotify }).into('posts')
+  res.send({ success: true, postid: latest + 1 })
+}
+
+module.exports = fn
