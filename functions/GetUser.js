@@ -5,7 +5,7 @@ const { verify } = require('jsonwebtoken')
  * @param {import('express').Response & { db: import('knex'), token: string }} res
  * @param {function} next
  */
-await function fn (req, res, next) {
+async function fn (req, res, next) {
   const { authorization } = req.header
 
   if (!authorization) return res.send({ success: false, message: 'not authorized' })
