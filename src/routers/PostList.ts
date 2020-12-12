@@ -1,4 +1,5 @@
 import { Request, Response, RequestHandler } from "express"
+import { GetPostsBySelection } from "../database/Posts"
 
 /**
  * @param {import('express').Request} req
@@ -6,13 +7,9 @@ import { Request, Response, RequestHandler } from "express"
  */
 export default async function fn (req:Request, res:Response) {
   const { boardid } = req.params
-  const { limit = 30, page = 0 } = req.query
+  const limit = parseInt(req.query.limit as string || "30")
+  const page = parseInt(req.query.page as string || "0")
 
-  const data = await res.db.select('*')
-    .where('boardid', boardid).orderBy('createdAt')
-    .limit(limit).offset(limit * page - limit).from('posts')
-
+  const data = await GetPostsBySelection(limit, page, parseInt(boardid))
   res.send({ success: true, data })
 }
-
-module.exports = fn

@@ -1,5 +1,6 @@
 import { Request, Response, RequestHandler } from "express"
 import sha256 from 'sha256'
+import { CreateUser, ExistsUser } from "../database/Users"
 
 /**
  * @param {import('express').Request} req
@@ -13,17 +14,14 @@ export default async function fn (req:Request, res:Response) {
   if (pwraw.length <= 9) return res.send({ success: false, message: 'passwd is too short' })
   if (pwraw.length > 30) return res.send({ success: false, message: 'passwd is too long' })
 
-  const [data] = await res.db.select('*').where({ userid }).from('users')
-  if (data) return res.send({ success: false, message: 'userid aleady exist' })
+  if (await ExistsUser(userid)) return res.send({ success: false, message: 'userid aleady exist' })
 
   const pwsalt = gensalt()
   const passwd = sha256(pwsalt + pwraw)
 
-  await res.db.insert({ userid, passwd, pwsalt, nicknm }).into('users')
+  await CreateUser(userid, passwd, pwsalt, nicknm)
   res.send({ success: true, message: 'created account "' + userid  + '"' })
 }
-
-module.exports = fn
 
 function gensalt () {
   let salt = ''

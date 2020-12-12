@@ -4,7 +4,7 @@
  * @property {string} passwd : 사용자 PW
  * @property {string} pwsalt : 패스워드 솔트
  * @property {string} nicknm : 닉네임
- * @property {string} ismebr : 멤버 여부
+ * @property {boolean} ismebr : 멤버 여부
  * @property {string} avatar : 아바타 Relative URL
  * @property {string} cretAt : 만들어진 날짜
  */
@@ -13,7 +13,7 @@ export default interface UserModel{
     passwd:string
     pwsalt:string
     nicknm:string
-    ismebr:string
+    ismebr:boolean
     avatar:string
     cretAt:string
 }

@@ -10,3 +10,10 @@ export function GetCommentBySelection(limit:number, page:number) {
         resolve(comments)
     })
 }
+
+export function CreateNewComment(postsid:String) {
+    return new Promise(async (resolve: (Comment: Array<number>) => void, reject) => {
+        const data = await Database.insert({ postsid })
+        resolve(data)
+    })
+}

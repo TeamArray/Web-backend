@@ -1,4 +1,5 @@
 import { Request, Response, RequestHandler } from "express"
+import { CreateNewPost } from "../database/Posts"
 
 const SECOND = 1000
 const cooldown: Array<string> = []
@@ -22,10 +23,11 @@ export default async function fn (req:Request, res:Response) {
   if (content.length > 2000) return res.send({ success: false, message: 'content is too long' })
   if (isnotify && !user.ismebr) return res.send({ success: false, message: 'cannot create notify post, you\'re not a team member' })
 
-  const [{ postid: latest }] = await res.db.select('postid').where('boardid', boardid).orderBy('postid').limit(1)
-
-  await res.db.insert({ postid: latest + 1, title, author: user.userid, content, boardid, isnotify }).into('posts')
-  res.send({ success: true, postid: latest + 1 })
+  const CreatedPostID = await CreateNewPost(user, boardid, title, content, isnotify)
+  if(CreatedPostID!){
+    res.send({ success: true, postid: CreatedPostID })
+  }else{
+    res.send({ success: false, postid: -1 })
+  }
+  
 }
-
-module.exports = fn

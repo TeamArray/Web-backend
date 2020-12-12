@@ -19,7 +19,7 @@ export default async function fn (req:Request, res:Response, next:() => void) {
   const verified:TokenPayload = verify(token, res.locals.token) as TokenPayload
   if (!verified) return res.send({ success: false, message: 'invalid authentication token' })
 
-  const user = GetUserByID(verified.userid)
+  const user = await GetUserByID(verified.userid)
   if (!user) return res.send({ success: false, message: 'user not exists' })
 
   req.user = user

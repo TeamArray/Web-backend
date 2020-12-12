@@ -1,6 +1,7 @@
 import { Request, Response, RequestHandler } from "express"
 import { verify } from 'jsonwebtoken'
 import cryptoRandomString from 'crypto-random-string'
+import { CreateNewComment } from "../database/Comments"
 
 /**
  * @param {import('express').Request} req
@@ -15,6 +16,6 @@ export default async function fn (req:Request, res:Response) {
   if (content.length > 280) return res.send({ success: false, message: 'content is too long' })
   if (content.length === 0) return res.send({ success: false, message: 'content is too short' })
 
-  const data = await res.db.insert({ postsid })
+  const data = await CreateNewComment(postsid)
   res.send({ success: true, data })
 }
