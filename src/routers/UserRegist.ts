@@ -1,10 +1,11 @@
-const sha256 = require('sha256')
+import { Request, Response, RequestHandler } from "express"
+import sha256 from 'sha256'
 
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response & { db: import('knex') }} res
  */
-async function fn (req, res) {
+export default async function fn (req:Request, res:Response) {
   const { userid, userid: nicknm, passwd: pwraw } = req.body
   if (typeof userid !== 'string' || typeof pwraw !== 'string') return res.send({ success: false, message: 'not valid request' })
   if (userid.length <= 6) return res.send({ success: false, message: 'userid is too short' })

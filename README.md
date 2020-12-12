@@ -21,4 +21,4 @@ just some backend codes
 2. edit `config.json` if you need
 
 ## start
-just... type `node .`
+just... type `npm run start`

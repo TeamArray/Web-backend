@@ -5,13 +5,25 @@
   "repository": "git@github.com:TeamArray/Web-backend.git",
   "author": "Array [ ] <wnskwjs123@naver.com>",
   "license": "GPL-3.0",
+  "scripts": {
+    "start": "tsc && node ./dist/index.ts"
+  },
   "dependencies": {
+    "@types/cors": "^2.8.9",
+    "@types/crypto-random-string": "^2.0.0",
+    "@types/express": "^4.17.9",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/knex": "^0.16.1",
+    "@types/sha256": "^0.2.0",
     "cors": "^2.8.5",
     "crypto-random-string": "^3.3.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.12",
+    "knex": "^0.21.13",
     "mysql": "^2.18.1",
     "sha256": "^0.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.12"
   }
 }
